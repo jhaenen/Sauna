@@ -38,7 +38,7 @@ module.exports = {
         use: 'html-loader'
       },
       {
-        test: /\.(svg|png|jpg|gif)$/,
+        test: /\.(png|jpg|gif)$/,
         use: {
           loader: 'file-loader',
           options: {
@@ -47,6 +47,13 @@ module.exports = {
             esModule: false
           }
         }
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          'babel-loader',
+          'vue-svg-loader',
+        ],
       }
     ]
   },
