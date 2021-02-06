@@ -8,7 +8,7 @@ module.exports = merge(common, {
   mode: 'production',
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'prod_dist'),
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
