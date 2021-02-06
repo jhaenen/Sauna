@@ -1,8 +1,10 @@
 <template>
-    <div id="gallery">
-        <gallery-item itemText="Sauna"/>
-        <gallery-item itemText="Verlichting"/>
-        <div class="spacer">&nbsp;</div>
+    <div :class="{center: !overflow}">
+        <div id="gallery">
+            <gallery-item itemText="Sauna"/>
+            <gallery-item itemText="Verlichting"/>
+            <div class="spacer">&nbsp;</div>
+        </div>
     </div>
 </template>
 
@@ -14,7 +16,7 @@ export default {
     components: {galleryItem},
     data() {
         return {
-            //dragPerm: false
+            overflow: false
         }
     },
     mounted() {
@@ -29,6 +31,8 @@ export default {
         var paddingOffset = gallery.children[0].offsetLeft;
         var flick = false;
         var animate = false;
+
+        this.overflow = gallery.scrollWidth > gallery.clientWidth;
 
         setInterval(() => {
             if(animate) {
@@ -47,17 +51,19 @@ export default {
             paddingOffset = gallery.children[0].offsetLeft;
             gallery.scrollLeft = gallery.children[setTarget].offsetLeft - paddingOffset;
             setPoint = gallery.children[setTarget].offsetLeft - paddingOffset;
+            this.overflow = gallery.scrollWidth > gallery.clientWidth;
         });
 
         document.addEventListener("pointerdown", (e) => {
-            if(e.target.className == "galleryItem" && e.buttons == 1) {
+            if(e.target.className == "galleryItem" && e.buttons == 1 && this.overflow) {
                 dragPerm = true;
                 hitPoint = e.clientX;
+                var animate = false;
             }
         });
 
         document.addEventListener("pointerup", (e) => {
-            if(dragPerm) {
+            if(dragPerm && this.overflow) {
                 if(diff >= (paddingOffset + (gallery.children[setTarget].offsetWidth * .2))) {
                     if(setTarget >= (numTargets - 1)) setTarget = numTargets - 1;
                     else setTarget++;
@@ -82,7 +88,7 @@ export default {
         });
 
         document.addEventListener("pointermove", (e) => {
-            if(e.buttons == 1 && dragPerm) {
+            if(e.buttons == 1 && dragPerm && this.overflow) {
                 var tempDiff = hitPoint - e.clientX;
                 if(Math.abs(diff - tempDiff) > 25) flick = true;
                 diff = tempDiff;
@@ -103,8 +109,13 @@ export default {
         overflow: hidden;
         display: flex;
         align-items: center;
-        margin-top: 10vh;
+        margin-top: 30px;
         padding-left: 3vw;
+    }
+
+    .center {
+        display: flex;
+        justify-content: center;
     }
 
     #gallery::-webkit-scrollbar {

@@ -41,6 +41,6 @@ export default {
         font-weight: 600;
         text-align: center;
         font-size: 22px;
-        padding: 24px 0 24px 0;
+        padding: 24px 0 30px 0;
     }
 </style>
