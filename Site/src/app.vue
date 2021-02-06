@@ -1,21 +1,26 @@
 <template>
-    <div id="body">
-        <div id="title">{{title}}</div>
+    <div id="body" :class="{lightMode: !(SD.darkMode), darkMode: SD.darkMode}">
+        <title-bar :title="title" back="false"/>
         <sensor-data/>
         <gallery/>
     </div>
 </template>
 
 <script>
+import Store from "./stores/Store"
+
+import titleBar from "./components/titleBar.vue"
 import sensorData from "./components/sensorData.vue"
 import gallery from "./components/gallery.vue"
 
 export default {
     name: "App",
-    components: {sensorData, gallery},
+    components: {sensorData, gallery, titleBar},
+
     data() {
         return {
-            title: "My Sauna"
+            title: "Mijn sauna",
+            SD: Store.data
         }
     }
 };
@@ -31,16 +36,21 @@ export default {
         color: #16191C;
     }
 
+    .lightMode {
+        color: #16191C;
+        background: #FFFFFF;
+    }
+
+    .darkMode {
+        background: #16191C;
+        color: #FFFFFF;
+    }
+
     #body {
         height: 100vh;
     }
-</style>
 
-<style scoped>
-    #title {
-        font-weight: 600;
-        text-align: center;
-        font-size: 22px;
-        padding: 24px 0 30px 0;
+    .clickable {
+        cursor: pointer;
     }
 </style>

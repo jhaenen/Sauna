@@ -1,13 +1,13 @@
 <template>
-    <div id="container"><div id="itemHolder">
-        <div class="item">
+    <div id="container"><div id="itemHolder" :class="{lightMode: !(SD.darkMode), darkMode: SD.darkMode}">
+        <div :class="{item: true, lightMode: !(SD.darkMode), darkMode: SD.darkMode}">
             <temp-icon class="icon"/>
             <div>
                 <div class="title">Temperatuur</div>
                 <div class="value">46&#176;C</div>
             </div>
         </div>
-        <div class="item">
+        <div :class="{item: true, lightMode: !(SD.darkMode), darkMode: SD.darkMode}">
             <hum-icon class="icon"/>
             <div>
                 <div class="title">Vochtigheid</div>
@@ -18,12 +18,19 @@
 </template>
 
 <script>
+import Store from "../stores/Store"
+
 import tempIcon from "../assets/temperatuur_icon.svg"
 import humIcon from "../assets/vochtigheid_icon.svg"
 
 export default {
     name: "sensorData",
-    components: {tempIcon, humIcon}
+    components: {tempIcon, humIcon},
+    data() {
+        return {
+            SD: Store.data
+        }
+    }
 }
 </script>
 
@@ -36,7 +43,15 @@ export default {
 
     #itemHolder {
         width: 100vw;
+        
+    }
+
+    #itemHolder.lightMode {
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .item.darkMode {
+        background: #1d2327;
     }
 
     .item {
@@ -45,7 +60,6 @@ export default {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-
     }
 
     @media only screen and (min-width: 370px) {
@@ -58,9 +72,16 @@ export default {
             box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         }
 
+        #itemHolder.lightMode {
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        }
+
         .item {
             margin: 0;
             border-radius: 8px;
+        }
+
+        .item.lightMode {
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
     }
