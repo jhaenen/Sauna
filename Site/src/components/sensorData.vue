@@ -35,11 +35,8 @@ export default {
     }
 
     #itemHolder {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        width: 600px;
-        min-width: 366px;
+        width: 100vw;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
     .item {
@@ -47,25 +44,41 @@ export default {
         min-width: 173px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        justify-content: flex-start;
+
     }
+
+    @media only screen and (min-width: 370px) {
+        #itemHolder {
+            width: 500px;
+            min-width: 366px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        }
+
+        .item {
+            margin: 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    
 
     .icon {
         width: 48px;
         height: 48px;
-        margin: 8px;
+        margin: 8px 8px 8px 14px;
     }
 
     .title {
         font-weight: 600;
         font-size: 14px;
-        color: #16191C;
     }
 
     .value {
-        color: #16191C;
         opacity: 40%;
         font-size: 14px;
     }

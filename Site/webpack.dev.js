@@ -1,4 +1,3 @@
-// webpack.config.js
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 var path = require('path');
 
@@ -34,6 +33,17 @@ module.exports = {
         ]
       },
       {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader",
+        ],
+      },
+      {
         test: /\.html$/,
         use: 'html-loader'
       },
@@ -50,14 +60,11 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        use: [
-          'babel-loader',
-          'vue-svg-loader',
-        ],
+        use: ['babel-loader', 'vue-svg-loader'],
       }
     ]
   },
   plugins: [
     new VueLoaderPlugin(),
   ]
-}
+};
