@@ -24,12 +24,33 @@ export default {
         var setPoint = 0;
         const gallery = document.getElementById("gallery");
         var setTarget = 0; 
+        var curPoint = 0;
         var numTargets = gallery.childElementCount - 1;
         var paddingOffset = gallery.children[0].offsetLeft;
         var flick = false;
+        var animate = false;
+
+        setInterval(() => {
+            if(animate) {
+                var dir = 0;
+                if(curPoint < setPoint) { curPoint += 10; dir = 1; }
+                else if(curPoint > setPoint) { curPoint -= 10; dir = -1; }
+
+                gallery.scrollLeft = curPoint;
+
+                if(dir == 1 && curPoint >= setPoint) { gallery.scrollLeft = setPoint; animate = false; }
+                else if(dir == -1 && curPoint <= setPoint) { gallery.scrollLeft = setPoint; animate = false; }
+            }
+        }, 10);
+
+        window.addEventListener("resize", () => {
+            paddingOffset = gallery.children[0].offsetLeft;
+            gallery.scrollLeft = gallery.children[setTarget].offsetLeft - paddingOffset;
+            setPoint = gallery.children[setTarget].offsetLeft - paddingOffset;
+        });
 
         document.addEventListener("pointerdown", (e) => {
-            if(e.target.className == "galleryItem") {
+            if(e.target.className == "galleryItem" && e.buttons == 1) {
                 dragPerm = true;
                 hitPoint = e.clientX;
             }
@@ -37,7 +58,7 @@ export default {
 
         document.addEventListener("pointerup", (e) => {
             if(dragPerm) {
-                if(diff >= (paddingOffset + (gallery.children[setTarget].offsetWidth * .4))) {
+                if(diff >= (paddingOffset + (gallery.children[setTarget].offsetWidth * .2))) {
                     if(setTarget >= (numTargets - 1)) setTarget = numTargets - 1;
                     else setTarget++;
                 } else if((-diff) >= (paddingOffset + (gallery.children[setTarget].offsetWidth / 2))) {
@@ -53,7 +74,8 @@ export default {
                 flick = false;
 
                 diff = 0;
-                gallery.scrollLeft = gallery.children[setTarget].offsetLeft - paddingOffset;
+                curPoint = gallery.scrollLeft;
+                animate = true;
                 setPoint = gallery.children[setTarget].offsetLeft - paddingOffset;
             }
             dragPerm = false;
@@ -64,7 +86,6 @@ export default {
                 var tempDiff = hitPoint - e.clientX;
                 if(Math.abs(diff - tempDiff) > 25) flick = true;
                 diff = tempDiff;
-                //console.log(diff)
                 gallery.scrollLeft = setPoint + diff;
             }
         });
@@ -76,14 +97,14 @@ export default {
     $aspect: (60vh * 230) / 307;
     $clampWidth: 80vw;
     $padding: 50vw;
+    $gap: 24px;
 
     #gallery {
         overflow: hidden;
         display: flex;
         align-items: center;
-        justify-content: space-between;
         margin-top: 10vh;
-        padding-left: calc(#{$padding} - (min(#{$clampWidth}, #{$aspect}) / 2));
+        padding-left: 3vw;
     }
 
     #gallery::-webkit-scrollbar {
@@ -91,12 +112,16 @@ export default {
     }
 
     .spacer {
-        width: 5vw;
+        width: 3vw;
         flex-shrink: 0;
     }
 
     #gallery > :not(:last-child)  {
         display: inline-flex;
-        margin-right: calc(#{$padding - 5} - (min(#{$clampWidth}, #{$aspect}) / 2));
+        margin-right: $gap;
+    }
+
+    #gallery > :nth-last-child(2) {
+        margin-right: 0;
     }
 </style>
