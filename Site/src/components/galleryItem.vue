@@ -1,5 +1,5 @@
 <template>
-    <div class="galleryItem"><div class="item-text">{{itemText}}</div></div>
+    <div class="galleryItem" touch-action="none"><div class="item-text">{{itemText}}</div></div>
 </template>
 
 <script>

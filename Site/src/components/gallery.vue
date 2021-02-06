@@ -37,7 +37,7 @@ export default {
 
         document.addEventListener("pointerup", (e) => {
             if(dragPerm) {
-                if(diff >= (paddingOffset + (gallery.children[setTarget].offsetWidth / 2))) {
+                if(diff >= (paddingOffset + (gallery.children[setTarget].offsetWidth * .4))) {
                     if(setTarget >= (numTargets - 1)) setTarget = numTargets - 1;
                     else setTarget++;
                 } else if((-diff) >= (paddingOffset + (gallery.children[setTarget].offsetWidth / 2))) {
