@@ -47,7 +47,7 @@ export default {
     }
 
     #itemHolder.lightMode {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
     .item.darkMode {
@@ -64,11 +64,13 @@ export default {
 
     @media only screen and (min-width: 370px) {
         #itemHolder {
-            width: 500px;
+            width: 400px;
             min-width: 366px;
             display: flex;
             align-items: center;
-            justify-content: space-around;
+            /* justify-content: space-around; */
+            justify-content: space-between;
+            margin: 0 16px;
             box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         }
 
@@ -82,7 +84,7 @@ export default {
         }
 
         .item.lightMode {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
     }
 

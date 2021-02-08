@@ -26,5 +26,34 @@ export default {
 </script>
 
 <style>
-    @import url("./site.css");
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+
+    body {
+        margin: 0;
+        overflow-x: hidden;
+        font-family: 'Open Sans', sans-serif;
+        color: #16191C;
+    }
+
+    .lightMode {
+        color: #16191C;
+        background: #FFFFFF;
+    }
+
+    .darkMode {
+        background: #16191C;
+        color: #FFFFFF;
+    }
+
+    #body {
+        height: 100vh;
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+    .bold {
+        font-weight: 600;
+    }
 </style>

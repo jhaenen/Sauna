@@ -9,7 +9,7 @@ import gallery from "../components/gallery.vue"
 
 export default {
     name: "App",
-    components: {gallery},
+    components: { gallery },
     mounted() {
         Store.data.back = false;
     }
