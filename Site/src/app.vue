@@ -46,7 +46,8 @@ export default {
     }
 
     #body {
-        height: 100vh;
+        min-height: 100vh;
+        height: 100%;
     }
 
     .clickable {
