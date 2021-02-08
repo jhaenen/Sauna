@@ -4,7 +4,7 @@
             <div :class="{itemHolder: true, darkMode: SD.darkMode}">
                 <div :class="{items: true, darkMode: SD.darkMode}">
                     <div class="item"><on-off title="Sauna heaters" :onLink="domoPre + 'switchscene&idx=4&switchcmd=On'" :offLink="domoPre + 'switchscene&idx=4&switchcmd=Off'" :bold="true"/></div>
-                    <div class="txt"><triangle-icon :class="{triangle: true, clickable: true, rotated: expanded, darkMode: SD.darkMode}" @click="expanded = !expanded"/>4 apparaten</div>
+                    <div class="txt clickable" @click="expanded = !expanded"><triangle-icon :class="{triangle: true, rotated: expanded, darkMode: SD.darkMode}"/>4 apparaten</div>
                     <div :class="{items: true, darkMode: SD.darkMode}" v-if="expanded">
                         <div class="item" v-for="(lamp, index) in lamps" :key="index"><on-off :title="lamp.name" :onLink="domoPre + lamp.on" :offLink="domoPre + lamp.off" :bold="false"/></div>
                     </div>
@@ -90,9 +90,9 @@ export default {
     }
 
     .txt {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        padding: 2px 0 3px 16px;
+        margin: 2px 0 3px 16px;
         font-size: 14px;
     }
 
