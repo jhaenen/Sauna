@@ -1,17 +1,21 @@
 <template>
-    <div id="titleBar"><div id="title">{{title}}</div><dark-mode-icon :class="{icon: true, clickable: true, darkMode: SD.darkMode}" @click="SD.darkMode = !(SD.darkMode)"/></div>
-    
+    <div id="titleBar">
+        <div id="title">{{title}}</div>
+        <dark-mode-icon id="dm" :class="{icon: true, clickable: true, darkMode: SD.darkMode}" @click="SD.darkMode = !(SD.darkMode)"/>
+        <back-icon v-if="SD.back" id="back" :class="{icon: true, clickable: true, darkMode: SD.darkMode}" @click="$router.push('/')"/>
+    </div>
 </template>
 
 <script>
 import Store from "../stores/Store"
 
 import darkModeIcon from "../assets/darkmode.svg"
+import backIcon from "../assets/back.svg"
 
 export default {
     name: "titleBar",
-    props: ['title', 'back'],
-    components: {darkModeIcon},
+    props: ['title'],
+    components: {darkModeIcon, backIcon},
     data() {
         return {
             SD: Store.data
@@ -35,11 +39,19 @@ export default {
         font-size: 22px;
     }
 
-    .icon {
+    #dm {
         position: absolute;
+        right: 24px;
+    }
+
+    #back {
+        position: absolute;
+        left: 24px;
+    }
+
+    .icon {
         width: 24px;
         height: 24px;
-        right: 24px;
     }
 
     .icon.darkMode > .black {

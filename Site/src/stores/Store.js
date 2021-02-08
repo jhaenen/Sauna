@@ -1,6 +1,7 @@
 const Store = {
     data: {
-        darkMode: false
+        darkMode: false,
+        back: false
     }
 };
 

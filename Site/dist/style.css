@@ -12,11 +12,17 @@
     text-align: center;
     font-size: 22px;
 }
-.icon[data-v-359da92b] {
+#dm[data-v-359da92b] {
     position: absolute;
+    right: 24px;
+}
+#back[data-v-359da92b] {
+    position: absolute;
+    left: 24px;
+}
+.icon[data-v-359da92b] {
     width: 24px;
     height: 24px;
-    right: 24px;
 }
 .icon.darkMode > .black[data-v-359da92b] {
     stroke: #ffffff;
@@ -82,30 +88,6 @@
     font-size: 14px;
 }
 
-
-.galleryItem[data-v-a4f0adb6] {
-    position: relative;
-    height: 60vh;
-    width: min(80vw, calc((60vh * 230) / 307));
-    /* background-image: url("../assets/sauna.png"); */
-    background: brown;
-    background-position: -100px -225px;
-    border-radius: 8px;
-    flex-shrink: 0;
-}
-.item-text[data-v-a4f0adb6] {
-    position: absolute;
-    color: white;
-    bottom: 18px;
-    left: 24px;
-    font-size: 36px;
-    -webkit-user-select: none;       
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-#gallery[data-v-9b4fef1c]{overflow:hidden;display:flex;align-items:center;margin-top:30px;padding-left:3vw}.center[data-v-9b4fef1c]{display:flex;justify-content:center}#gallery[data-v-9b4fef1c]::-webkit-scrollbar{display:none}.spacer[data-v-9b4fef1c]{width:3vw;flex-shrink:0}#gallery[data-v-9b4fef1c]>:not(:last-child){display:inline-flex;margin-right:24px}#gallery[data-v-9b4fef1c]>:nth-last-child(2){margin-right:0}
 body {
     margin: 0;
     overflow-x: hidden;
@@ -132,3 +114,26 @@ body {
 }
 
 
+
+.galleryItem[data-v-a4f0adb6] {
+    position: relative;
+    height: 60vh;
+    width: min(80vw, calc((60vh * 230) / 307));
+    background-position: center right;
+    background-size: auto 100%;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+.item-text[data-v-a4f0adb6] {
+    position: absolute;
+    color: white;
+    bottom: 18px;
+    left: 24px;
+    font-size: 36px;
+    -webkit-user-select: none;       
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#gallery[data-v-9b4fef1c]{overflow:hidden;display:flex;align-items:center;margin-top:30px;padding-left:3vw}.center[data-v-9b4fef1c]{display:flex;justify-content:center}#gallery[data-v-9b4fef1c]::-webkit-scrollbar{display:none}.spacer[data-v-9b4fef1c]{width:3vw;flex-shrink:0}#gallery[data-v-9b4fef1c]>:not(:last-child){display:inline-flex;margin-right:24px}#gallery[data-v-9b4fef1c]>:nth-last-child(2){margin-right:0}

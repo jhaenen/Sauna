@@ -1,8 +1,7 @@
 <template>
     <div :class="{center: !overflow}">
         <div id="gallery">
-            <gallery-item itemText="Sauna"/>
-            <gallery-item itemText="Verlichting"/>
+            <gallery-item v-for="(item, index) in galleryItems" :key="index" :itemText="item.text" :itemImg="item.img" :itemLink="item.link"/>
             <div class="spacer">&nbsp;</div>
         </div>
     </div>
@@ -16,7 +15,11 @@ export default {
     components: {galleryItem},
     data() {
         return {
-            overflow: false
+            overflow: false,
+            galleryItems: [
+                {text: "Sauna", img: "./assets/sauna_heater.jpg", link: "/sauna"},
+                {text: "Verlichting", img: "./assets/sauna_verlichting.jpg", link: "/lights"}
+            ]
         }
     },
     mounted() {
@@ -31,6 +34,8 @@ export default {
         var paddingOffset = gallery.children[0].offsetLeft;
         var flick = false;
         var animate = false;
+        var dragged = false;
+        var link = "";
 
         this.overflow = gallery.scrollWidth > gallery.clientWidth;
 
@@ -55,10 +60,14 @@ export default {
         });
 
         document.addEventListener("pointerdown", (e) => {
-            if(e.target.className == "galleryItem" && e.buttons == 1 && this.overflow) {
-                dragPerm = true;
-                hitPoint = e.clientX;
-                var animate = false;
+            if(e.target.className !== undefined && e.target.className == "galleryItem" && e.buttons == 1) {
+                if(this.overflow) {
+                    dragPerm = true;
+                    hitPoint = e.clientX;
+                    animate = false;
+                }
+
+                link = e.target.attributes.data.value;
             }
         });
 
@@ -85,11 +94,16 @@ export default {
                 setPoint = gallery.children[setTarget].offsetLeft - paddingOffset;
             }
             dragPerm = false;
+
+            link = "";
+            dragged = false;
         });
 
         document.addEventListener("pointermove", (e) => {
             if(e.buttons == 1 && dragPerm && this.overflow) {
+                e.preventDefault();
                 var tempDiff = hitPoint - e.clientX;
+                if(Math.abs(diff) > 5) dragged = true;
                 if(Math.abs(diff - tempDiff) > 25) flick = true;
                 diff = tempDiff;
                 gallery.scrollLeft = setPoint + diff;

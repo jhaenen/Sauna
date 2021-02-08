@@ -1,11 +1,20 @@
 <template>
-    <div class="galleryItem" touch-action="none"><div class="item-text">{{itemText}}</div></div>
+    <router-link :to="itemLink" draggable="false" costum v-slot="{ href, navigate, isActive }">
+        <NavLink class="clickable" :active="isActive" :href="href" @click="navigate">
+            <div class="galleryItem" touch-action="none" :style="{backgroundImage: imgUrl}"><div class="item-text">{{itemText}}</div></div>
+        </NavLink>
+    </router-link>
 </template>
 
 <script>
 export default {
     name: "galleryItem",
-    props: ["itemText"]
+    props: ["itemText", "itemImg", "itemLink", "disable"],
+    computed: {
+        imgUrl: function () {
+            return 'url("' + this.itemImg + '")';
+        }
+    }
 }
 </script>
 
@@ -14,9 +23,8 @@ export default {
         position: relative;
         height: 60vh;
         width: min(80vw, calc((60vh * 230) / 307));
-        /* background-image: url("../assets/sauna.png"); */
-        background: brown;
-        background-position: -100px -225px;
+        background-position: center right;
+        background-size: auto 100%;
         border-radius: 8px;
         flex-shrink: 0;
     }
