@@ -1,6 +1,6 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
-import routes from "./routes"
+import routes from "./routes/routes"
 
 const homePath = routes[0].redirect;
 var homeIdx = -1;
