@@ -1,22 +1,19 @@
 #include "RGBController.h"
 
 #include <Arduino.h>
-#include <Wire.h>
 #include <queue>
 
 const uint8_t addr  = 0x53;
 std::queue<ContEvent> eventQueue;
+TwoWire* theWire;
 
 void ICACHE_RAM_ATTR receiveData() {
-    uint8_t rec = 0;
-    Wire.requestFrom((int)addr, 6);
+    theWire->begin(4, 5);
+    uint8_t numRec = theWire->requestFrom(addr, (uint8_t)6);
 
-    uint8_t buff[10];
+    uint8_t buff[numRec];
   
-    while(Wire.available()) {
-        buff[rec] = Wire.read();
-        rec++;
-    }
+    theWire->readBytes(buff, numRec);
 
     if(buff[ACTION_INDEX] != BUTTON_ACTION || buff[BUTTON_INDEX] != RELEASE_BUTTON) eventQueue.emplace(buff[ACTION_INDEX], buff[BUTTON_INDEX], buff[WIPER_INDEX]);
 }
@@ -31,7 +28,11 @@ RGBContInfo* RGBController::updateInfo() {
             switch(event.buttonType) {
                 case RGB_BUTTON:
                 if(info.onOff) {
-                    if(info.whiteMode) info.whiteMode = false;
+                    if(info.whiteMode) {
+                        info.whiteMode = false;
+                        whiteBri = info.color.v;
+                        info.color.v = rgbBri;
+                    }
                     cdMode = COLOR_MODE;
                 }
                 break;
@@ -43,7 +44,14 @@ RGBContInfo* RGBController::updateInfo() {
                 case WHITE_BUTTON:
                 if(info.onOff) {
                     info.whiteMode = !info.whiteMode;
-                    if(info.whiteMode) cdMode = DIM_MODE;
+                    if(info.whiteMode) {
+                        rgbBri = info.color.v;
+                        info.color.v = whiteBri;
+                        cdMode = DIM_MODE;
+                    } else {
+                        whiteBri = info.color.v;
+                        info.color.v = rgbBri;
+                    }
                 }
                 break;
                 
@@ -81,36 +89,37 @@ RGBContInfo* RGBController::updateInfo() {
     return &info;
 }
 
-RGBController::RGBController(const uint8_t intPin) {
-    Wire.begin();
+RGBController::RGBController() {}
+
+void RGBController::begin(const uint8_t intPin, TwoWire* wire) {
+    theWire = wire;
+    wire->begin();
     pinMode(intPin, INPUT_PULLUP);
     attachInterrupt(intPin, receiveData, FALLING);
 
-    Wire.beginTransmission(addr);
-    Wire.write(0xBD);
-    Wire.write(0x39);
-    Wire.write(0x05);
-    Wire.write(0x00);
-    Wire.endTransmission();
+    wire->beginTransmission(addr);
+    wire->write(0xBD);
+    wire->write(0x39);
+    wire->write(0x05);
+    wire->write(0x00);
+    wire->endTransmission();
 
     for(uint8_t i = 0; i <= 5; i++) {
-        Wire.beginTransmission(addr);
-        Wire.write(0xC0 + i);
-        Wire.write(0x15);
-        Wire.write(0x00);
-        Wire.endTransmission();
+        wire->beginTransmission(addr);
+        wire->write(0xC0 + i);
+        wire->write(0x15);
+        wire->write(0x00);
+        wire->endTransmission();
     }
 
     for(uint8_t i = 0; i <= 5; i++) {
-        Wire.beginTransmission(addr);
-        Wire.write(0xC6 + i);
-        Wire.write(0x45);
-        Wire.write(0x00);
-        Wire.endTransmission();
+        wire->beginTransmission(addr);
+        wire->write(0xC6 + i);
+        wire->write(0x45);
+        wire->write(0x00);
+        wire->endTransmission();
     }
 }
-
-
 
 RGBController::~RGBController() {
 

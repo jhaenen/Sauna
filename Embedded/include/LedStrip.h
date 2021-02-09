@@ -7,7 +7,7 @@
 #include "dt.h"
 
 #ifndef DATA_PIN
-    #define DATA_PIN 12
+    #define DATA_PIN 13
 #endif
 
 class LedStrip {

@@ -45,7 +45,7 @@ void LedStrip::setWhiteMode(bool onOff) {
         setHV(target.h, target.v);
         whiteMode = false;
     } else if(onOff && !whiteMode) {
-        setWhite(255);
+        setWhite(1);
         whiteMode = true;
     }
 }

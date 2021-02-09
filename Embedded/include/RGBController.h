@@ -1,6 +1,7 @@
 #ifndef RGB_CONTROLLER_H_
 #define RGB_CONTROLLER_H_
 
+#include <Wire.h>
 #include <stdint.h>
 
 #include "dt.h"
@@ -54,11 +55,15 @@ private:
 	RGBContInfo info;
 	cdMode_t cdMode;
 	uint8_t speedIncrement;
+	uint8_t rgbBri = 255;
+	uint8_t whiteBri = 255;
 public:
 	RGBContInfo* updateInfo();
 	RGBContInfo* getInfo() {  return &info; };
 
-    RGBController(const uint8_t intPin);
+	void begin(const uint8_t intPin, TwoWire* wire);
+
+    RGBController();
     ~RGBController();
 };
 
