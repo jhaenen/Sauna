@@ -1,6 +1,6 @@
 import Home from "./home.vue"
-import Sauna from "./sauna.vue"
-import Lights from "./lights.vue"
+const Sauna = () => import("./sauna.vue")
+const Lights = () => import("./lights.vue")
 
 export default [
     {

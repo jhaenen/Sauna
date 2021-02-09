@@ -106,7 +106,8 @@ body {
     color: #FFFFFF;
 }
 #body {
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
 }
 .clickable {
     cursor: pointer;
@@ -138,41 +139,3 @@ body {
 }
 
 #gallery[data-v-9b4fef1c]{overflow:hidden;display:flex;align-items:center;margin-top:30px;padding-left:3vw}.center[data-v-9b4fef1c]{display:flex;justify-content:center}#gallery[data-v-9b4fef1c]::-webkit-scrollbar{display:none}.spacer[data-v-9b4fef1c]{width:3vw;flex-shrink:0}#gallery[data-v-9b4fef1c]>:not(:last-child){display:inline-flex;margin-right:24px}#gallery[data-v-9b4fef1c]>:nth-last-child(2){margin-right:0}
-
-.container {
-    width: 100%;
-    padding: 20px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 18px;
-}
-.buttons {
-    display: flex;
-}
-.button {
-    width: 66px;
-    height: 44px;
-    line-height: 44px;
-    text-align: center;
-    vertical-align: middle;
-    border: 1px solid rgba(22, 25, 28, 0.1);
-    border-radius: 8px;
-    -webkit-user-select: none;       
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-.on {
-    color: #5FA55A;
-    margin-right: 8px;
-}
-.off {
-    color: #FA5457;
-}
-.button.darkMode  {
-    background: #1d2327;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.center[data-v-6da9e6ae]{display:flex;justify-content:center}.itemHolder[data-v-6da9e6ae]{margin:20px 0;display:flex;justify-content:center;max-width:400px;width:calc(100vw - 32px);min-width:270px;box-shadow:0 4px 20px rgba(0,0,0,.1);border-radius:8px}.itemHolder.darkMode[data-v-6da9e6ae]{background:#1d2327;box-shadow:0 0px 0px rgba(0,0,0,0)}.items[data-v-6da9e6ae]{width:100%}.items.darkMode[data-v-6da9e6ae]{background:#1d2327;border-radius:8px}.item[data-v-6da9e6ae]{display:flex;padding:0 24px}.items[data-v-6da9e6ae]>:not(:last-child){border-bottom:1px solid rgba(22,25,28,.1)}.items.darkMode[data-v-6da9e6ae]>:not(:last-child){border-bottom:1px solid rgba(255,255,255,.1)}.txt[data-v-6da9e6ae]{display:inline-flex;align-items:center;margin:2px 0 3px 16px;font-size:14px}.triangle[data-v-6da9e6ae]{margin-right:8px}.triangle.rotated[data-v-6da9e6ae]{transform:rotate(90deg)}.triangle.darkMode>*[data-v-6da9e6ae]{stroke:#fff;fill:#fff}

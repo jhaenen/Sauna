@@ -10,7 +10,7 @@
 import Store from "../stores/Store"
 
 import darkModeIcon from "../assets/darkmode.svg"
-import backIcon from "../assets/back.svg"
+const backIcon = () => import("../assets/back.svg")
 
 export default {
     name: "titleBar",
