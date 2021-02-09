@@ -31,6 +31,8 @@ export default {
         align-items: center;
         justify-content: space-evenly;
         padding: 24px 0 30px 0;
+        margin: 0 auto;
+        max-width: 1200px;
     }
 
     #title {

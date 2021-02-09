@@ -4,14 +4,14 @@
             <temp-icon class="icon"/>
             <div>
                 <div class="title">Temperatuur</div>
-                <div class="value">46&#176;C</div>
+                <div class="value">{{SD.sensorData.temp}}&#176;C</div>
             </div>
         </div>
         <div :class="{item: true, lightMode: !(SD.darkMode), darkMode: SD.darkMode}">
             <hum-icon class="icon"/>
             <div>
                 <div class="title">Vochtigheid</div>
-                <div class="value">75%</div>
+                <div class="value">{{SD.sensorData.hum}}%</div>
             </div>
         </div>
     </div></div>
@@ -30,6 +30,10 @@ export default {
         return {
             SD: Store.data
         }
+    },
+    mounted() {
+        Store.methods.getSensorData();
+        setInterval(Store.methods.getSensorData, 5000);
     }
 }
 </script>

@@ -15,7 +15,6 @@ import sensorData from "./components/sensorData.vue"
 export default {
     name: "App",
     components: {sensorData, titleBar},
-
     data() {
         return {
             title: "Mijn sauna",
