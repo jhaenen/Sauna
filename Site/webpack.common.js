@@ -20,21 +20,6 @@ module.exports = {
             }
         },
         {
-            test: /\.html$/,
-            use: 'html-loader'
-        },
-        {
-            test: /\.(png|jpg|gif)$/,
-            use: {
-                loader: 'file-loader',
-                options: {
-                name: '[name].[hash].[ext]',
-                outputPath: 'img',
-                esModule: false
-                }
-            }
-        },
-        {
             test: /\.svg$/,
             use: ['babel-loader', 'vue-svg-loader'],
         }

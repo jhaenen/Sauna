@@ -2,9 +2,10 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 var path = require('path');
 
 module.exports = {
+  target: "web",
   mode: 'development',
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'dev'),
     port: 1000,
     hot: true,
     open: true,
@@ -35,28 +36,10 @@ module.exports = {
       {
         test: /\.s[ac]ss$/i,
         use: [
-          // Creates `style` nodes from JS strings
           "style-loader",
-          // Translates CSS into CommonJS
           "css-loader",
-          // Compiles Sass to CSS
           "sass-loader",
         ],
-      },
-      {
-        test: /\.html$/,
-        use: 'html-loader'
-      },
-      {
-        test: /\.(png|jpg|gif)$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: '[name].[hash].[ext]',
-            outputPath: 'img',
-            esModule: false
-          }
-        }
       },
       {
         test: /\.svg$/,
