@@ -20,18 +20,20 @@ private:
 
     bool onOff = true;
     bool whiteMode = false;
-    uint8_t whiteTarget = 128;
-    uint8_t whiteCurrent = 100;
 public:
     void setHV(uint8_t h, uint8_t v);
     void setWhite(uint8_t bri);
 
-    void setTarget(uint8_t h, uint8_t v);
+    void setTarget(uint8_t h, uint8_t v, uint8_t w);
     void followTarget();
     HVColor getTarget();
 
     void turnOnOff(bool onOff);
+    void toggleOnOff() { turnOnOff(!onOff); };
+    bool getOnOff() { return onOff; }
+
     void setWhiteMode(bool onOff);
+    void toggleWhiteMode() { setWhiteMode(!whiteMode); }
 
     LedStrip(uint16_t numLeds);
     ~LedStrip();

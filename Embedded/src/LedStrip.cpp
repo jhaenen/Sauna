@@ -22,8 +22,8 @@ void LedStrip::setWhite(uint8_t bri) {
     }
 }
 
-void LedStrip::setTarget(uint8_t h, uint8_t v) {
-    if(whiteMode) whiteTarget = v;
+void LedStrip::setTarget(uint8_t h, uint8_t v, uint8_t a) {
+    if(whiteMode) target.w = a;
     else {
         target.h = h;
         target.v = v;
@@ -35,7 +35,8 @@ void LedStrip::turnOnOff(bool onOff) {
         setHV(0, 0);
         this->onOff = false;
     } else if(onOff && !(this->onOff)) {
-        setHV(target.h, target.v);
+        if(whiteMode) setWhite(target.w);
+        else setHV(target.h, target.v);
         this->onOff = true;
     }
 }
@@ -45,7 +46,7 @@ void LedStrip::setWhiteMode(bool onOff) {
         setHV(target.h, target.v);
         whiteMode = false;
     } else if(onOff && !whiteMode) {
-        setWhite(1);
+        setWhite(target.w);
         whiteMode = true;
     }
 }
@@ -70,15 +71,15 @@ void LedStrip::followTarget() {
             setHV(current.h, current.v);
         }
     } else {
-        if(whiteTarget != whiteCurrent) {
-            int16_t diffV = whiteTarget - whiteCurrent;
+        if(target.w != current.w) {
+            int16_t diffV = target.w - current.w;
             if(diffV > 0) {
-                whiteCurrent++;
+                current.w++;
             } else if(diffV < 0) {
-                whiteCurrent--;
+                current.w--;
             }
 
-            setWhite(whiteCurrent);
+            setWhite(current.w);
         }
     }
 }

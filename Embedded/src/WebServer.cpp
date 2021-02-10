@@ -5,13 +5,14 @@
 void WebServer::refreshStats(float temp, float hum) {
     File stats = LittleFS.open("stats.json", "w");
 
-    stats.printf("{\"temp\": %.2f, \"hum\": %.2f}", temp, hum);
+    stats.printf("{\"temp\":%.2f,\"hum\":%.2f,\"lights:\":{\"onOff\":%s,\"color\":{\"h\":%u,\"v\":%u,\"w\":%u}}}", temp, hum, (lightInfo->onOff) ? "true" : "false", lightInfo->color.h, lightInfo->color.v, lightInfo->color.w);
 
     stats.close();
 }
 
-WebServer::WebServer(uint16_t port) {
+WebServer::WebServer(LightContInfo* info, uint16_t port) {
     server = new AsyncWebServer(port);
+    lightInfo = info;
 
     // Initialize LittleFS
     if(!LittleFS.begin()){
@@ -21,6 +22,25 @@ WebServer::WebServer(uint16_t port) {
 
     server->on("/stats", HTTP_GET, [](AsyncWebServerRequest *request){
         request->send(LittleFS, "/stats.json", String(), false);
+    });
+
+    server->on("/setLight", HTTP_GET, [this](AsyncWebServerRequest *request) {
+        if(request->hasParam("h") && request->hasParam("v")) {
+            lightInfo->color.h = request->getParam("h")->value().toInt();
+            lightInfo->color.v = request->getParam("v")->value().toInt();
+            lightInfo->whiteMode = false;
+            lightInfo->onOff = true;
+
+            lightInfo->update = true;
+            request->send(200, "text/plain", "Color is set!");
+        } else if(request->hasParam("w")) {
+            lightInfo->color.w = request->getParam("w")->value().toInt();
+            lightInfo->whiteMode = true;
+            lightInfo->onOff = true;
+
+            lightInfo->update = true;
+            request->send(200, "text/plain", "Color is set!");
+        } else request->send(400, "text/plain", "Please provide valid parameters");
     });
 
     DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");

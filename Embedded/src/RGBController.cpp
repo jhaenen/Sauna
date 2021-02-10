@@ -18,7 +18,7 @@ void ICACHE_RAM_ATTR receiveData() {
     if(buff[ACTION_INDEX] != BUTTON_ACTION || buff[BUTTON_INDEX] != RELEASE_BUTTON) eventQueue.emplace(buff[ACTION_INDEX], buff[BUTTON_INDEX], buff[WIPER_INDEX]);
 }
 
-RGBContInfo* RGBController::updateInfo() {
+void RGBController::updateInfo(LightContInfo& info) {
     for(uint8_t i = 0; i < 20; i++) {
         if(eventQueue.empty()) break;
         ContEvent event = eventQueue.front();
@@ -27,38 +27,32 @@ RGBContInfo* RGBController::updateInfo() {
         if(event.actionType == BUTTON_ACTION) {
             switch(event.buttonType) {
                 case RGB_BUTTON:
-                if(info.onOff) {
-                    if(info.whiteMode) {
-                        info.whiteMode = false;
-                        whiteBri = info.color.v;
-                        info.color.v = rgbBri;
+                    if(info.onOff) {
+                        if(info.whiteMode) {
+                            info.whiteMode = false;
+                            info.update = true;
+                        }
+                        cdMode = COLOR_MODE;
                     }
-                    cdMode = COLOR_MODE;
-                }
                 break;
 
                 case DIM_BUTTON:
-                if(info.onOff) cdMode = DIM_MODE;
+                    if(info.onOff) cdMode = DIM_MODE;
                 break;
                 
                 case WHITE_BUTTON:
-                if(info.onOff) {
-                    info.whiteMode = !info.whiteMode;
-                    if(info.whiteMode) {
-                        rgbBri = info.color.v;
-                        info.color.v = whiteBri;
-                        cdMode = DIM_MODE;
-                    } else {
-                        whiteBri = info.color.v;
-                        info.color.v = rgbBri;
+                    if(info.onOff) {
+                        info.whiteMode = !info.whiteMode;
+                        if(info.whiteMode) cdMode = DIM_MODE;
+                        info.update = true;
                     }
-                }
                 break;
                 
                 case SPEEDUP_BUTTON:
                     if(info.onOff) {
                         info.speed += speedIncrement;
                         if(info.speed > 100) info.speed = 100;
+                        info.update = true;
                     }
                 break;
                 
@@ -66,6 +60,7 @@ RGBContInfo* RGBController::updateInfo() {
                     if(info.onOff) {
                         info.speed -= speedIncrement;
                         if(info.speed > 100) info.speed = 0;
+                        info.update = true;
                     }
                 break;
                 
@@ -75,6 +70,7 @@ RGBContInfo* RGBController::updateInfo() {
                 
                 case ONOFF_BUTTON:
                     info.onOff = !info.onOff;
+                    info.update = true;
                 break;
                 
                 default: break;
@@ -82,11 +78,14 @@ RGBContInfo* RGBController::updateInfo() {
 
         } else if(event.actionType == WIPER_ACTION && info.onOff) {
             if(cdMode == COLOR_MODE && !(info.whiteMode)) info.color.h = COLOR_OFFSET - map(event.wiperData, 2, 210, 0, 240);
-            if(cdMode == DIM_MODE) info.color.v = map(event.wiperData, 2, 210, 0, 255);
+            if(cdMode == DIM_MODE) {
+                uint8_t val = map(event.wiperData, 2, 210, 0, 255);
+                if(info.whiteMode) info.color.w = val;
+                else info.color.v = val;
+            }
+            info.update = true;
         }
     }
-    
-    return &info;
 }
 
 RGBController::RGBController() {}

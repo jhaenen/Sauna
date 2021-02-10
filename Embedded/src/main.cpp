@@ -9,9 +9,10 @@
 
 Adafruit_BME280 bme;
 LedStrip strip(120);
+LightContInfo lightInfo;
 
 Network network(233);
-WebServer server;
+WebServer server(&lightInfo);
 
 RGBController rgbCont;
 
@@ -50,14 +51,19 @@ void setup() {
 }
 
 void loop() {
-	RGBContInfo* info = rgbCont.updateInfo();
-	strip.turnOnOff(info->onOff);
-	if(info->onOff) {
-		strip.setTarget(info->color.h, info->color.v);
-		strip.setWhiteMode(info->whiteMode);
+	rgbCont.updateInfo(lightInfo);
+
+	if(lightInfo.update) {
+		strip.turnOnOff(lightInfo.onOff);
+		strip.setTarget(lightInfo.color.h, lightInfo.color.v, lightInfo.color.w);
+		strip.setWhiteMode(lightInfo.whiteMode);
+		lightInfo.update = false;
+	}
+	
+	if(strip.getOnOff()) {
 		strip.followTarget();
 	}
-
+	
 	if((millis() % 5000) == 0) {
 		measure();
 	}

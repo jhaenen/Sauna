@@ -35,13 +35,6 @@ enum bufferIndex_t {
 	WIPER_INDEX  = 3
 };
 
-struct RGBContInfo {
-	bool onOff = true;
-	HVColor color;
-	uint8_t speed = 50;
-	bool whiteMode = false;
-};
-
 struct ContEvent {
 	uint8_t actionType;
 	uint8_t buttonType;
@@ -52,14 +45,10 @@ struct ContEvent {
 
 class RGBController {
 private:
-	RGBContInfo info;
 	cdMode_t cdMode;
 	uint8_t speedIncrement;
-	uint8_t rgbBri = 255;
-	uint8_t whiteBri = 255;
 public:
-	RGBContInfo* updateInfo();
-	RGBContInfo* getInfo() {  return &info; };
+	void updateInfo(LightContInfo& info);
 
 	void begin(const uint8_t intPin, TwoWire* wire);
 
