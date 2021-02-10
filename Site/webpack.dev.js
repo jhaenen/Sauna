@@ -11,6 +11,7 @@ module.exports = {
     open: true,
     historyApiFallback: true
   },
+  devtool: "eval-source-map",
   module: {
     rules: [
       {
@@ -19,12 +20,8 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        exclude: /node_modules/,
         loader: 'babel-loader',
-        options: {
-          presets: [
-            '@babel/preset-env'
-          ]
-        }
       },
       {
         test: /\.css$/,

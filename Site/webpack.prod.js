@@ -34,6 +34,6 @@ module.exports = merge(common, {
     new MiniCssExtractPlugin({
       filename: 'style.css'
     }),
-    new BundleAnalyzerPlugin()
+    //new BundleAnalyzerPlugin()
   ]
 });

@@ -117,13 +117,13 @@ export default {
     $aspect: (60vh * 230) / 307;
     $clampWidth: 80vw;
     $padding: 50vw;
-    $gap: 24px;
+    $gap: 20px;
 
     #gallery {
         overflow: hidden;
         display: flex;
         align-items: center;
-        margin-top: 30px;
+        margin-top: 28px;
         padding-left: 3vw;
     }
 

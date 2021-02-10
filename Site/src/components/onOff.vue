@@ -2,8 +2,8 @@
     <div class="container">
         <div :class="{bold: bold}">{{title}}</div>
         <div class="buttons">
-            <div :class="{button: true, on: true, clickable: true, darkMode: SD.darkMode}" @click="on">AAN</div>
-            <div :class="{button: true, off: true, clickable: true, darkMode: SD.darkMode}" @click="off">UIT</div>
+            <div class="button on clickable bold" @click="on">AAN</div>
+            <div class="button off clickable bold" @click="off">UIT</div>
         </div>
     </div>
 </template>
@@ -66,25 +66,20 @@ export default {
         line-height: 44px;
         text-align: center;
         vertical-align: middle;
-        border: 1px solid rgba(22, 25, 28, 0.1);
         border-radius: 8px;
         -webkit-user-select: none;       
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none; 
+        color: #ffffff;
     }
 
     .on {
-        color: #5FA55A;
+        background: #5FA55A;
         margin-right: 8px;
     }
 
     .off {
-        color: #FA5457;
-    }
-
-    .button.darkMode  {
-        background: #1d2327;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #FA5457;
     }
 </style>

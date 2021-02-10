@@ -9,7 +9,7 @@
 <script>
 import Store from "../stores/Store"
 
-import darkModeIcon from "../assets/darkmode.svg"
+import darkModeIcon from "../assets/darkmode_icon.svg"
 const backIcon = () => import("../assets/back.svg")
 
 export default {
@@ -24,13 +24,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #titleBar {
         position: relative;
         display: flex;
         align-items: center;
         justify-content: space-evenly;
-        padding: 24px 0 30px 0;
+        padding: 28px 0 28px 0;
         margin: 0 auto;
         max-width: 1200px;
     }
@@ -56,13 +56,17 @@ export default {
         height: 24px;
     }
 
-    .icon.darkMode > .black {
-        stroke: #ffffff;
-        fill: #ffffff;
-    }
+    .icon.darkMode {
+        .black {
+            fill: #ffffff;
+        }
 
-    .icon.darkMode > .white {
-        stroke: #ffffff;
-        fill: #16191C;
+        g {
+            fill: #16191C;
+            path {
+                fill: #ffffff;
+            }
+        }
+
     }
 </style>
