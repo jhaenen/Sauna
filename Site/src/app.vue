@@ -1,7 +1,6 @@
 <template>
     <div id="body" :class="{lightMode: !(SD.darkMode), darkMode: SD.darkMode}">
         <title-bar :title="title" back="false"/>
-        <sensor-data/>
         <router-view/>
     </div>
 </template>
@@ -47,6 +46,11 @@ export default {
     #body {
         min-height: 100vh;
         height: 100%;
+    }
+
+    .center {
+        display: flex;
+        justify-content: center;
     }
 
     .clickable {

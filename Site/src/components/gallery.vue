@@ -127,11 +127,6 @@ export default {
         padding-left: 3vw;
     }
 
-    .center {
-        display: flex;
-        justify-content: center;
-    }
-
     #gallery::-webkit-scrollbar {
         display: none;
     }

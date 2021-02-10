@@ -1,33 +1,37 @@
 <template>
-    <div class="center">
-        <div>
-            <div :class="{itemHolder: true, darkMode: SD.darkMode}">
-                <div :class="{items: true, darkMode: SD.darkMode}">
-                    <div class="item"><on-off title="Sauna heaters" :onLink="domoPre + 'switchscene&idx=4&switchcmd=On'" :offLink="domoPre + 'switchscene&idx=4&switchcmd=Off'" :bold="true"/></div>
-                    <div><div class="txt clickable" @click="expanded = !expanded"><triangle-icon :class="{triangle: true, rotated: expanded, darkMode: SD.darkMode}"/>4 apparaten</div></div>
-                    <div :class="{items: true, darkMode: SD.darkMode}" v-if="expanded">
-                        <div class="item" v-for="(lamp, index) in lamps" :key="index"><on-off :title="lamp.name" :onLink="domoPre + lamp.on" :offLink="domoPre + lamp.off" :bold="false"/></div>
+    <div>
+        <sensor-data/>
+        <div class="center">
+            <div>
+                <div :class="{itemHolder: true, center: true, darkMode: SD.darkMode}">
+                    <div :class="{items: true, darkMode: SD.darkMode}">
+                        <div class="item"><on-off title="Sauna heaters" :onLink="domoPre + 'switchscene&idx=4&switchcmd=On'" :offLink="domoPre + 'switchscene&idx=4&switchcmd=Off'" :bold="true"/></div>
+                        <div><div class="txt clickable" @click="expanded = !expanded"><triangle-icon :class="{triangle: true, rotated: expanded, darkMode: SD.darkMode}"/>4 apparaten</div></div>
+                        <div :class="{items: true, darkMode: SD.darkMode}" v-if="expanded">
+                            <div class="item" v-for="(lamp, index) in lamps" :key="index"><on-off :title="lamp.name" :onLink="domoPre + lamp.on" :offLink="domoPre + lamp.off" :bold="false"/></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div :class="{itemHolder: true, darkMode: SD.darkMode}">
-                <div class="items item"><on-off title="Sauna ventilator" :bold="true"/></div>
+                <div :class="{itemHolder: true, center: true, darkMode: SD.darkMode}">
+                    <div class="items item"><on-off title="Sauna ventilator" :bold="true"/></div>
+                </div>
             </div>
-        </div>
+        </div>   
     </div>
 </template>
 
 <script>
 import Store from "../stores/Store"
 
+import sensorData from "../components/sensorData.vue"
 import onOff from "../components/onOff.vue" 
 
 import triangleIcon from "../assets/triangle.svg"
 
 export default {
     name: "Sauna",
-    components: { onOff, triangleIcon },
+    components: { onOff, triangleIcon, sensorData },
     data() {
         return {
             SD: Store.data,
@@ -46,15 +50,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .center {
-        display: flex;
-        justify-content: center;
-    }
-
     .itemHolder {
         margin: 20px 0;
-        display: flex;
-        justify-content: center;
         max-width: 400px;
         width: calc(100vw - 32px);
         min-width: 270px;

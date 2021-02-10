@@ -1,5 +1,5 @@
 <template>
-    <div id="container"><div id="itemHolder" :class="{lightMode: !(SD.darkMode), darkMode: SD.darkMode}">
+    <div class="center"><div :class="{itemHolder: true, lightMode: !(SD.darkMode), darkMode: SD.darkMode}">
         <div :class="{item: true, lightMode: !(SD.darkMode), darkMode: SD.darkMode}">
             <temp-icon class="icon"/>
             <div>
@@ -38,19 +38,12 @@ export default {
 }
 </script>
 
-<style scoped>
-    #container {
-        display: flex;
-        justify-content: center;
-
-    }
-
-    #itemHolder {
+<style lang="scss" scoped>
+    .itemHolder {
         width: 100vw;
-        
     }
 
-    #itemHolder.lightMode {
+    .itemHolder.lightMode {
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
@@ -67,18 +60,17 @@ export default {
     }
 
     @media only screen and (min-width: 370px) {
-        #itemHolder {
+        .itemHolder {
             width: 400px;
             min-width: 366px;
             display: flex;
             align-items: center;
-            /* justify-content: space-around; */
             justify-content: space-between;
             margin: 0 16px;
             box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         }
 
-        #itemHolder.lightMode {
+        .itemHolder.lightMode {
             box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         }
 
@@ -92,8 +84,6 @@ export default {
         }
     }
 
-    
-
     .icon {
         width: 48px;
         height: 48px;
@@ -106,7 +96,7 @@ export default {
     }
 
     .value {
-        opacity: 40%;
+        color: #757f85;
         font-size: 14px;
     }
 </style>
