@@ -1,5 +1,5 @@
 <template>
-    <div ref="slider" :class="{slider: true, darkMode: SD.darkMode}" draggable="false">
+    <div touch-action="none" ref="slider" :class="{slider: true, darkMode: SD.darkMode}" draggable="false">
         <div ref="sliderHandle" class="handle" :style="{left: left + 'px'}"></div>
         <div ref="progress" :class="{progress: true, darkMode: SD.darkMode}" :style="{width: progressWidth + 'px'}"></div>
     </div>
@@ -50,6 +50,12 @@ export default {
         this.$refs.sliderHandle.addEventListener("pointerup", (e) => {
             if(e.buttons == 1) {
                 handleGrab = false;
+            }
+        });
+
+        window.addEventListener("selectstart", (e) => {
+            if(handleGrab) {
+                e.preventDefault();
             }
         });
 
