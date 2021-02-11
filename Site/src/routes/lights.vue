@@ -4,7 +4,7 @@
             <div :class="{itemHolder: true, center: true, darkMode: SD.darkMode}">
                 <div :class="{items: true, darkMode: SD.darkMode}">
                     <div class="item title">Lichtsterkte</div>
-                    <div class="item"><slider-el/></div>
+                    <div class="item"><slider-el color="#ff00ff" /></div>
                 </div>
             </div>
         </div>
@@ -42,7 +42,7 @@ export default {
     }
 
     .itemHolder.darkMode {
-        background: #1d2327;
+        background: #1E2327;
         box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
     }
 
@@ -51,7 +51,7 @@ export default {
     }
 
     .items.darkMode {
-        background: #1d2327;
+        background: #1E2327;
         border-radius: 8px;
     }
 

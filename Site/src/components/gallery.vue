@@ -60,7 +60,7 @@ export default {
         });
 
         document.addEventListener("pointerdown", (e) => {
-            if(e.target.className !== undefined && e.target.className == "galleryItem" && e.buttons == 1) {
+            if(e.target.className == "galleryItem" && e.buttons == 1) {
                 if(this.overflow) {
                     dragPerm = true;
                     hitPoint = e.clientX;
