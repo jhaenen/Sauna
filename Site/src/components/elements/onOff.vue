@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Store from "../stores/Store"
+import Store from "../../stores/Store"
 
 export default {
     name: "onOff",

@@ -25,7 +25,7 @@
 import Store from "../stores/Store"
 
 import sensorData from "../components/sensorData.vue"
-import onOff from "../components/onOff.vue" 
+import onOff from "../components/elements/onOff.vue" 
 
 import triangleIcon from "../assets/triangle.svg"
 
