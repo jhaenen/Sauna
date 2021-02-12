@@ -1,6 +1,6 @@
 <template>
-    <div id="container" draggable="false">
-        <div ref="wheel" id="wheel" class="clickable">
+    <div id="container" draggable="false" :class="{whiteMode: SD.lightInfo.whiteMode}" touch-action="none">
+        <div ref="wheel" id="wheel" :class="{clickable: true, whiteMode: SD.lightInfo.whiteMode}">
             <div id="inner1" :class="{darkMode: SD.darkMode}">
                 <div id="inner2" :class="{darkMode: SD.darkMode}"></div>
             </div>
@@ -19,13 +19,14 @@ export default {
             SD: Store.data,
             left: 0,
             top: 0,
+            isMounted: false
         }
     }, 
-    mounted() {
+    mounted() {        
         var handleGrab = false;
 
-        this.left = this.$refs.wheel.offsetWidth / 2 - 2 - 18;
-        this.top = 0;
+        this.isMounted = true;
+        this.setColor(270 - this.map(this.currentColor, 0, 255, 0, 360), false);
 
         this.$refs.wheel.addEventListener("pointerdown", (e) => {
             if(e.buttons == 1 && e.target == this.$refs.wheel) {
@@ -34,8 +35,17 @@ export default {
                 const y = wh - e.layerY + 18;;
                 const coords = syncCoords(x, y, wh);
 
-                this.left = coords.x;
-                this.top = coords.y;
+                handleGrab = true;
+
+                this.setColor(coords.phi, true);
+
+                if(!(this.whiteMode)) {
+                    var colDeg;
+                    if(coords.deg <= 270) colDeg = 270 - coords.deg;
+                    else colDeg = 630 - coords.deg;
+
+                    Store.data.lightInfo.color.h = Math.round(this.map(colDeg, 0, 360, 0, 255));
+                }
             }
         });
 
@@ -63,13 +73,20 @@ export default {
 
                 if(righTarget) {
                     const coords = syncCoords(x, y, wh);
-                    this.left = coords.x;
-                    this.top = coords.y;
+                    this.setColor(coords.phi, true);
+
+                    if(!(this.whiteMode)) {
+                        var colDeg;
+                        if(coords.deg <= 270) colDeg = 270 - coords.deg;
+                        else colDeg = 630 - coords.deg;
+
+                        Store.data.lightInfo.color.h = Math.round(this.map(colDeg, 0, 360, 0, 255));
+                    }
                 }
             }
         });
 
-        function syncCoords(x, y, size) {
+        function syncCoords(x, y) {
             var phi
             if(x == 0) {
                 if(y > 0) phi = .5 * Math.PI;
@@ -83,7 +100,45 @@ export default {
             else if(x < 0 && y < 0) phi = Math.PI + Math.atan(y / x);
             else if(x > 0 && y < 0) phi = 2 * Math.PI - Math.atan(-y / x);
 
-            return { x: size + size * Math.cos(phi), y: size - size * Math.sin(phi), deg: Math.round(phi * (180 / Math.PI)) }
+            return { phi: phi, deg: Math.round(phi * (180 / Math.PI)) }
+        }
+
+        
+    },
+    methods: {
+        setColor: function (phi, rad) {
+            if(this.isMounted) {
+                const size = this.$refs.wheel.offsetWidth / 2 - 2 - 18;
+                var deg = phi;
+
+                if(!rad) deg *= Math.PI / 180;
+
+                this.left = size + size * Math.cos(deg);
+                this.top = size - size * Math.sin(deg);
+            }
+        },
+        map: function(x, in_min, in_max, out_min, out_max) {
+            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        }
+    },
+    computed: {
+        currentColor() {
+            return Store.data.lightInfo.color.h;
+        },
+        whiteMode() {
+            return Store.data.lightInfo.whiteMode;
+        }
+    },
+    watch: {
+        currentColor: function () {
+            const phi = 270 - this.map(this.currentColor, 0, 255, 0, 360);
+            this.setColor(phi, false);
+        },
+        whiteMode: function () {
+            if(!(this.whiteMode)) {
+                const phi = 270 - this.map(this.currentColor, 0, 255, 0, 360);
+                this.setColor(phi, false);
+            }
         }
     }
 }
@@ -114,6 +169,10 @@ export default {
         );
     }
 
+    #container.whiteMode {
+        background: rgba(241, 223, 180, 0.2);
+    }
+
     #wheel {
         position: absolute;
         top: ($cwh - $wwh) / 2;
@@ -138,6 +197,10 @@ export default {
         );
     }
 
+    #wheel.whiteMode {
+        background: #F1DFB4;
+    }
+
     #handle {
         position: absolute;
         background: white;
@@ -146,6 +209,8 @@ export default {
         border-radius: 50%;
         top: 2px;
         left: $wwh / 2 - 18px;
+        border: 0.1px solid #ccd1d6;
+        user-select: none;
     }
 
     #inner1 {

@@ -2,7 +2,8 @@ const Store = {
     data: {
         darkMode: false,
         back: false,
-        sensorData: {temp: "--", hum: "--"},
+        sensorData: { temp: "--", hum: "--" },
+        lightInfo: { color: { h: 128, v: 128, w: 128 }, onOff: false, speed: 50, whiteMode: false },
         connection: true
     },
     methods: {

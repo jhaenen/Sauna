@@ -19,6 +19,10 @@ export default {
             title: "Mijn sauna",
             SD: Store.data
         }
+    },
+    mounted() {
+        Store.methods.getSensorData();
+        setInterval(Store.methods.getSensorData, 5000);
     }
 };
 </script>

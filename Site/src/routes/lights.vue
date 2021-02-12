@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="buttonBay">
-                <div :class="{itemHolder: true, small: true, center: true, clickable: true, darkMode: SD.darkMode}"><light-icon :class="{icon: true, darkMode: SD.darkMode}"/><div>Wit licht</div></div>
+                <div :class="{itemHolder: true, small: true, center: true, clickable: true, darkMode: SD.darkMode}" @click="SD.lightInfo.whiteMode = !(SD.lightInfo.whiteMode)"><light-icon :class="{icon: true, darkMode: SD.darkMode}"/><div>Wit licht</div></div>
                 <div :class="{itemHolder: true, small: true, center: true, clickable: true, darkMode: SD.darkMode}"><scene-icon :class="{icon: true, darkMode: SD.darkMode}"/>Scènes</div>
                 <div :class="{itemHolder: true, small: true, center: true, clickable: true, darkMode: SD.darkMode}"><anim-icon :class="{icon: true, darkMode: SD.darkMode}"/>Animaties</div>
             </div>
