@@ -21,13 +21,16 @@ void measure() {
 	float temp = bme.readTemperature();
 	float hum = bme.readHumidity();
     
-	server.refreshStats(temp, hum);
+	// server.refreshStats(temp, hum);
 }
 
 void setup() {
 	Serial.begin(115200);
 	Serial.println("\nSauna Controller\n");
-
+	
+	pinMode(15, OUTPUT);
+	digitalWrite(15, 1);
+	
 	network.connect();	
 
 	server.start();
