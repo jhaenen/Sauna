@@ -21,8 +21,8 @@ export default {
         }
     },
     mounted() {
-        Store.methods.getSensorData();
-        setInterval(Store.methods.getSensorData, 5000);
+        Store.methods.initWebSocket();
+        //setInterval(Store.methods.getSensorData, 5000);
     }
 };
 </script>

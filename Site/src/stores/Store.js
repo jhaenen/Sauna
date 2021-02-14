@@ -1,3 +1,6 @@
+var gateway = "ws://192.168.2.233/websocket";
+var websocket;
+
 const Store = {
     data: {
         darkMode: false,
@@ -7,28 +10,17 @@ const Store = {
         connection: true
     },
     methods: {
-        timeOutHandler() {
-            alert("Failed to connect");
-            Store.data.connection = false;
-        },
-        getSensorData() {
-            if(Store.data.connection) {
-                var xhr = new XMLHttpRequest();   
-
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && this.status == 200) {
-                        const data = JSON.parse(xhr.response);
-                        console.log(data);
-                        Store.data.sensorData = data;
-                    }
-                }
-
-                xhr.ontimeout = Store.methods.timeOutHandler;
-
-                xhr.timeout = 5000;
-                xhr.open("GET", "http://192.168.2.233/stats", true);  
-                xhr.send(null);
+        initWebSocket() {
+            websocket = new WebSocket(gateway);
+            websocket.onmessage = (e) => {
+                const data = JSON.parse(e.data);
+                console.log(data);
+                if(data.sensor != undefined) Store.data.sensorData = data.sensor;
+                if(data.lights != undefined) Store.data.lightInfo = data.lights;
             }
+        },
+        updateLights() {
+            
         }
     }
 };

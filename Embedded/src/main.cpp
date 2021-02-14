@@ -17,11 +17,11 @@ WebServer server(&lightInfo);
 RGBController rgbCont;
 
 void measure() {
-	bme.takeForcedMeasurement(); // has no effect in normal mode
+	bme.takeForcedMeasurement();
 	float temp = bme.readTemperature();
 	float hum = bme.readHumidity();
     
-	// server.refreshStats(temp, hum);
+	server.refreshSensorStats(temp, hum);
 }
 
 void setup() {
@@ -53,22 +53,28 @@ void setup() {
 	measure();
 }
 
+bool emitUpdate = false;
+
 void loop() {
 	rgbCont.updateInfo(lightInfo);
+	
 
 	if(lightInfo.update) {
 		strip.turnOnOff(lightInfo.onOff);
 		strip.setTarget(lightInfo.color.h, lightInfo.color.v, lightInfo.color.w);
 		strip.setWhiteMode(lightInfo.whiteMode);
 		lightInfo.update = false;
+		emitUpdate = true;
 	}
 	
 	if(strip.getOnOff()) {
 		strip.followTarget();
 	}
 	
-	if((millis() % 5000) == 0) {
-		measure();
-	}
+	unsigned long currentTime = millis();
+
+	if((currentTime % 5000) == 0) measure();
+	if((currentTime % 1000) == 0) server.webSocketCleanUp();
+	if((currentTime % 100) == 0 && emitUpdate) { server.syncLights(); emitUpdate = false; }
 }
 

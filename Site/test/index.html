@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <button id="button">Toggle</button>
+    <div id="state"></div>
+    <script>
+        var gateway = `ws://192.168.2.233/websocket`;
+        var websocket;
+
+        function initWebSocket() {
+          console.log('Trying to open a WebSocket connection...');
+          websocket = new WebSocket(gateway);
+          websocket.onopen    = onOpen;
+          websocket.onclose   = onClose;
+          websocket.onmessage = onMessage; // <-- add this line
+        }
+
+        function onOpen(event) {
+          console.log('Connection opened');
+        }
+      
+        function onClose(event) {
+          console.log('Connection closed');
+          setTimeout(initWebSocket, 2000);
+        }
+
+        function onMessage(event) {
+          document.getElementById('state').innerHTML = event.data;
+        }
+
+        window.addEventListener('load', onLoad);
+
+        function onLoad(event) {
+          initWebSocket();
+          initButton();
+        }
+      
+        function initButton() {
+          document.getElementById('button').addEventListener('click', toggle);
+        }
+
+        function toggle(){
+          websocket.send('toggle');
+        }
+      </script>
+</body>
+</html>

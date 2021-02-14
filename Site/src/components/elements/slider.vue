@@ -113,6 +113,12 @@ export default {
                 this.setValue(adj);
             }
         },
+        currentWhite: function () {
+            if(this.whiteMode) {
+                const adj = this.map(this.currentWhite, 0, 255, 0, 101);
+                this.setValue(adj);
+            }
+        },
         left: function() {
             if(this.isMounted && !(this.resizing)) {
                 if(this.whiteMode) Store.data.lightInfo.color.w =  Math.round(this.map(this.left, -2, this.$refs.slider.offsetWidth - 16, 0, 255));
