@@ -24,6 +24,13 @@ export default {
     }, 
     mounted() {        
         var handleGrab = false;
+        var update = false;
+        setInterval(() => {
+            if(update) {
+                Store.methods.updateLights();
+                update = false;
+            }
+        }, 100);
 
         this.isMounted = true;
         this.setColor(270 - this.map(this.currentColor, 0, 255, 0, 360), false);
@@ -45,6 +52,7 @@ export default {
                     else colDeg = 630 - coords.deg;
 
                     Store.data.lightInfo.color.h = Math.round(this.map(colDeg, 0, 360, 0, 255));
+                    update = true;
                 }
             }
         });
@@ -81,6 +89,7 @@ export default {
                         else colDeg = 630 - coords.deg;
 
                         Store.data.lightInfo.color.h = Math.round(this.map(colDeg, 0, 360, 0, 255));
+                        update = true;
                     }
                 }
             }

@@ -1,40 +1,13 @@
 #include "WebServer.h"
 
+#include <ArduinoJson.h>
 #include <LittleFS.h>
 
-void handleWebSocketMessage(void *arg, uint8_t *data, size_t len, uint32_t id) {
-  AwsFrameInfo *info = (AwsFrameInfo*)arg;
-  if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
-    data[len] = 0;
-    char buff[50];
-    snprintf(buff, 50, "Client %u sent data: %s", id, (char*)data);
-    Serial.println(buff);
-    //ws.textAll(buff);
-  }
-}
-
-void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
-    switch (type) {
-      case WS_EVT_CONNECT:
-        Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
-        break;
-      case WS_EVT_DISCONNECT:
-        Serial.printf("WebSocket client #%u disconnected\n", client->id());
-        break;
-      case WS_EVT_DATA:
-        handleWebSocketMessage(arg, data, len, client->id());
-        break;
-      case WS_EVT_PONG:
-      case WS_EVT_ERROR:
-        break;
-  }
-}
-
-void WebServer::refreshSensorStats(float temp, float hum) {
+void WebServer::refreshSensorStats(const float temp, const float hum) {
     char buf[50];
+    this->temp = temp;
+    this->hum = hum;
     snprintf(buf, 50, "{\"sensor\":{\"temp\":%.2f,\"hum\":%.2f}}", temp, hum);
-	// ,\"lights\":{\"onOff\":%s,\"color\":{\"h\":%u,\"v\":%u,\"w\":%u},\"speed\":%u,\"whiteMode\":%s}}",
-                        	// temp, hum, (lightInfo->onOff) ? "true" : "false", lightInfo->color.h, lightInfo->color.v, lightInfo->color.w, lightInfo->speed, (lightInfo->whiteMode) ? "true" : "false");
 
     websocket->textAll(buf);
 }
@@ -44,7 +17,13 @@ void WebServer::syncLights() {
     snprintf(buf, 100, "{\"lights\":{\"onOff\":%s,\"color\":{\"h\":%u,\"v\":%u,\"w\":%u},\"speed\":%u,\"whiteMode\":%s}}",
 						(lightInfo->onOff) ? "true" : "false", lightInfo->color.h, lightInfo->color.v, lightInfo->color.w, lightInfo->speed, (lightInfo->whiteMode) ? "true" : "false");
 
-    websocket->textAll(buf);
+    for(const auto& c: websocket->getClients()){
+		if(c->status() == WS_CONNECTED && c->id() != updateID){
+			c->text(buf);
+		}
+	}	
+
+	updateID = 0;
 }
 
 WebServer::WebServer(LightContInfo* info, uint16_t port) {
@@ -93,7 +72,45 @@ WebServer::WebServer(LightContInfo* info, uint16_t port) {
     });
 
     websocket = new AsyncWebSocket("/websocket");
-    websocket->onEvent(onEvent);
+    websocket->onEvent([this](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
+		if(type == WS_EVT_CONNECT) {
+			Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
+
+            char buf[150];
+            snprintf(buf, 150, "{\"sensor\":{\"temp\":%.2f,\"hum\":%.2f},\"lights\":{\"onOff\":%s,\"color\":{\"h\":%u,\"v\":%u,\"w\":%u},\"speed\":%u,\"whiteMode\":%s}}",
+						            temp, hum, (lightInfo->onOff) ? "true" : "false", lightInfo->color.h, lightInfo->color.v, lightInfo->color.w, lightInfo->speed, (lightInfo->whiteMode) ? "true" : "false");
+            
+            server->text(client->id(), buf);
+		} else if(type == WS_EVT_DISCONNECT) {
+			Serial.printf("WebSocket client #%u disconnected\n", client->id());
+		} else if(type == WS_EVT_DATA) {
+			AwsFrameInfo *info = (AwsFrameInfo*)arg;
+
+			if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
+				data[len] = 0;	
+				updateID = client->id();
+
+                // Serial.printf("Received: %s\n", data);
+
+				StaticJsonDocument<128> doc;
+                // DeserializationError error = 
+                deserializeJson(doc, data, len);
+				// if(error) {
+                //     Serial.print(F("deserializeJson() failed: "));
+                //     Serial.println(error.f_str());
+                // }
+
+				lightInfo->color.h = doc["lights"]["color"]["h"];
+				lightInfo->color.v = doc["lights"]["color"]["v"];
+				lightInfo->color.w = doc["lights"]["color"]["w"];
+				lightInfo->whiteMode = doc["lights"]["whiteMode"];
+				lightInfo->onOff = doc["lights"]["onOff"];
+				lightInfo->speed = doc["lights"]["speed"];
+				lightInfo->update = true;
+			}
+		}
+	});
+
     server->addHandler(websocket);
 }
 

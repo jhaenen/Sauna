@@ -14,12 +14,12 @@
                 </div>
             </div>
             <div class="buttonBay">
-                <div :class="{itemHolder: true, small: true, center: true, clickable: true, darkMode: SD.darkMode}" @click="SD.lightInfo.whiteMode = !(SD.lightInfo.whiteMode)"><light-icon :class="{icon: true, darkMode: SD.darkMode}"/><div>{{SD.lightInfo.whiteMode ? "RGB" : "Wit licht"}}</div></div>
+                <div :class="{itemHolder: true, small: true, center: true, clickable: true, darkMode: SD.darkMode}" @click="toggleWhite"><light-icon :class="{icon: true, darkMode: SD.darkMode}"/><div>{{SD.lightInfo.whiteMode ? "RGB" : "Wit licht"}}</div></div>
                 <div :class="{itemHolder: true, small: true, center: true, clickable: true, darkMode: SD.darkMode}"><scene-icon :class="{icon: true, darkMode: SD.darkMode}"/>Scènes</div>
                 <div :class="{itemHolder: true, small: true, center: true, clickable: true, darkMode: SD.darkMode}"><anim-icon :class="{icon: true, darkMode: SD.darkMode}"/>Animaties</div>
             </div>
             <div :class="{itemHolder: true, center: true, darkMode: SD.darkMode}">
-                <div class="item"><toggle-el :checked="SD.lightInfo.onOff" @toggle="SD.lightInfo.onOff = !SD.lightInfo.onOff"/></div>
+                <div class="item"><toggle-el :checked="SD.lightInfo.onOff" @toggle="toggleLights()"/></div>
             </div>
         </div>
     </div>
@@ -46,6 +46,16 @@ export default {
     },
     mounted() {
         Store.data.back = true;
+    },
+    methods: {
+        toggleLights: function() {
+            Store.data.lightInfo.onOff = !(Store.data.lightInfo.onOff);
+            Store.methods.updateLights();
+        },
+        toggleWhite: function() {
+            Store.data.lightInfo.whiteMode = !(Store.data.lightInfo.whiteMode);
+            Store.methods.updateLights();
+        }
     }
 };
 </script>

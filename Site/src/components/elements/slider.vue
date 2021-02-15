@@ -21,6 +21,13 @@ export default {
     mounted() {
         var handleGrab = false;
         var resizeVal = 0;
+        var update = false;
+        setInterval(() => {
+            if(update) {
+                Store.methods.updateLights();
+                update = false;
+            }
+        }, 100);
 
         window.addEventListener("resize", () => {
             if(!this.resizing) {
@@ -38,6 +45,7 @@ export default {
             if(e.buttons == 1 && e.target == this.$refs.slider) {
                 this.left = e.layerX - 8;
                 handleGrab = true;
+                update = true;
             }
         });
 
@@ -68,6 +76,7 @@ export default {
                 }
                 if(this.left > (this.$refs.slider.offsetWidth - 16)) this.left = this.$refs.slider.offsetWidth - 16;
                 if(this.left < -2) this.left = -2;
+                update = true;
             }
         });
 

@@ -20,7 +20,8 @@ const Store = {
             }
         },
         updateLights() {
-            
+            var lightInfo = {lights: Store.data.lightInfo};
+            websocket.send(JSON.stringify(lightInfo));
         }
     }
 };

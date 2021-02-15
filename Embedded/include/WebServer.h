@@ -11,12 +11,15 @@ private:
     AsyncWebServer* server;
     AsyncWebSocket* websocket;
     LightContInfo* lightInfo;
+    uint32_t updateID = 0;
+    float temp;
+    float hum;
 public:
     void start() { server->begin(); }
     void stop() { server->end(); }
     void webSocketCleanUp() { websocket->cleanupClients(); }
 
-    void refreshSensorStats(float temp, float hum);
+    void refreshSensorStats(const float temp, const float hum);
     void syncLights();
 
     WebServer(LightContInfo* info, uint16_t port = 80);
