@@ -36,30 +36,52 @@ WebServer::WebServer(LightContInfo* info, uint16_t port) {
         return;
     }
 
-    server->on("/stats", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(LittleFS, "/stats.json", String(), false);
+    server->on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/index.html", "text/html", false);
     });
 
-    server->on("/setLight", HTTP_GET, [this](AsyncWebServerRequest *request) {
-        if(request->hasParam("h") && request->hasParam("v")) {
-            lightInfo->color.h = request->getParam("h")->value().toInt();
-            lightInfo->color.v = request->getParam("v")->value().toInt();
-            lightInfo->whiteMode = false;
-            lightInfo->onOff = true;
+    server->on("/index.html", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/index.html", "text/html", false);
+    });
 
-            lightInfo->update = true;
-            request->send(200, "text/plain", "Color is set!");
-        } else if(request->hasParam("w")) {
-            lightInfo->color.w = request->getParam("w")->value().toInt();
-            lightInfo->whiteMode = true;
-            lightInfo->onOff = true;
+    server->on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/main.js", "application/javascript", false);
+    });
 
-            lightInfo->update = true;
-            request->send(200, "text/plain", "Color is set!");
-        } else request->send(400, "text/plain", "Please provide valid parameters");
+    server->on("/45.main.js", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/45.main.js", "application/javascript", false);
+    });
+
+    server->on("/236.main.js", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/236.main.js", "application/javascript", false);
+    });
+
+    server->on("/309.main.js", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/309.main.js", "application/javascript", false);
+    });
+
+    server->on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/style.css", "text/css", false);
+    });
+
+    server->on("/45.style.css", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/45.style.css", "text/css", false);
+    });
+
+    server->on("/309.style.css", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/309.style.css", "text/css", false);
+    });
+
+    server->on("/assets/sauna_heater.jpg", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/assets/sauna_heater.jpg", "img/jpg", false);
+    });
+
+    server->on("/assets/sauna_verlichting.jpg", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(LittleFS, "/assets/sauna_verlichting.jpg", "img/jpg", false);
     });
 
     DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
+    DefaultHeaders::Instance().addHeader("Content-Encoding", "gzip");
 
     server->onNotFound([](AsyncWebServerRequest *request) {
         if (request->method() == HTTP_OPTIONS) {

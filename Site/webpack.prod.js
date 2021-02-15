@@ -2,6 +2,7 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require("compression-webpack-plugin");
 
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
@@ -34,6 +35,7 @@ module.exports = merge(common, {
     new MiniCssExtractPlugin({
       filename: 'style.css'
     }),
+    new CompressionPlugin()
     //new BundleAnalyzerPlugin()
   ]
 });
