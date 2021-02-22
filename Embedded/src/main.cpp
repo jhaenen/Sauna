@@ -30,6 +30,7 @@ void setup() {
 	Serial.begin(115200);
 	Serial.println("\nSauna Controller\n");
 	pinMode(D8, OUTPUT);
+	digitalWrite(D8, 0);
 	
 	network.connect();
 	update = new UpdateService("ESP-Sauna");
@@ -64,10 +65,11 @@ void loop() {
 		strip.turnOnOff(lightInfo.onOff);
 		strip.setTarget(lightInfo.color.h, lightInfo.color.v, lightInfo.color.w);
 		strip.setWhiteMode(lightInfo.whiteMode);
-		lightInfo.update = false;
-		emitUpdate = true;
 		if(lightInfo.fan) digitalWrite(D8, 1);
 		else digitalWrite(D8, 0);
+
+		lightInfo.update = false;
+		emitUpdate = true;
 	}
 	
 	if(strip.getOnOff()) {
@@ -77,7 +79,7 @@ void loop() {
 	unsigned long currentTime = millis();
 
 	if((currentTime % 5000) == 0) measure();
-	if((currentTime % 1000) == 0) server.webSocketCleanUp();
-	if((currentTime % 100) == 0 && emitUpdate) { server.syncLights(); emitUpdate = false; }
+	if((currentTime % 10000) == 0) server.webSocketCleanUp();
+	if((currentTime % 500) == 0 && emitUpdate) { server.syncLights(); emitUpdate = false; }
 }
 
