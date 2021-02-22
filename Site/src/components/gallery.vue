@@ -17,8 +17,8 @@ export default {
         return {
             overflow: false,
             galleryItems: [
-                {text: "Sauna", img: "http://sauna.haenenweb.nl/assets/sauna_heater.jpg", link: "/sauna"},
-                {text: "Verlichting", img: "http://sauna.haenenweb.nl/assets/sauna_verlichting.jpg", link: "/lights"}
+                {text: "Sauna", img: "./assets/sauna_heater.webp", link: "/sauna"},
+                {text: "Verlichting", img: "./assets/sauna_verlichting.webp", link: "/lights"}
             ]
         }
     },

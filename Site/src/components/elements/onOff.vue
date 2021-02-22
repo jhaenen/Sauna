@@ -21,6 +21,7 @@ export default {
     },
     methods: {
         on: function() {
+            this.$emit("on");
             if(this.onLink != undefined) {
                 var xhr = new XMLHttpRequest();   
 
@@ -32,6 +33,7 @@ export default {
             }
         },
         off: function() {
+            this.$emit("off");
             if(this.offLink != undefined) {
                 var xhr = new XMLHttpRequest();   
 

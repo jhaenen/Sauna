@@ -8,18 +8,6 @@
 
 #define COLOR_OFFSET 70
 
-#define INIT_PULSE 25
-#define LONG_PULSE 29
-#define SHORT_PULSE 11
-#define OFF_DELAY 500000
-
-enum indicator_t {
-	OFF_INDICATOR 	= 0x80,
-	ON_INDICATOR 	= 0x81,
-	DIM_INDICATOR 	= 0x82,
-	RGB_INDICATOR 	= 0x84
-};
-
 enum action_t {
   	BUTTON_ACTION = 128,
   	WIPER_ACTION = 129

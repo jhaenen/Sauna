@@ -14,7 +14,7 @@
                 </div>
 
                 <div :class="{itemHolder: true, center: true, darkMode: SD.darkMode}">
-                    <div class="items item"><on-off title="Sauna ventilator" :bold="true"/></div>
+                    <div class="items item"><on-off title="Sauna ventilator" @on="fanToggle(true)" @off="fanToggle(false)" :bold="true"/></div>
                 </div>
             </div>
         </div>   
@@ -45,6 +45,14 @@ export default {
     },
     mounted() {
         Store.data.back = true;
+    },
+    methods: {
+        fanToggle: function(onOff) {
+            if(Store.data.lightInfo.fan != onOff) {
+                Store.data.lightInfo.fan = onOff;
+                Store.methods.updateLights();
+            }
+        }
     }
 };
 </script>

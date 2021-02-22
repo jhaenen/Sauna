@@ -13,6 +13,7 @@ struct HVColor {
 };
 
 struct LightContInfo {
+    bool fan = false;
 	bool onOff = false;
 	HVColor color;
 	uint8_t speed = 50;

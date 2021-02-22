@@ -4,6 +4,7 @@
 
 #include "Network.h"
 #include "WebServer.h"
+#include "UpdateService.h"
 #include "LedStrip.h"
 #include "RGBController.h"
 
@@ -13,6 +14,7 @@ LightContInfo lightInfo;
 
 Network network(233);
 WebServer server(&lightInfo);
+UpdateService* update;
 
 RGBController rgbCont;
 
@@ -27,11 +29,10 @@ void measure() {
 void setup() {
 	Serial.begin(115200);
 	Serial.println("\nSauna Controller\n");
+	pinMode(D8, OUTPUT);
 	
-	pinMode(15, OUTPUT);
-	digitalWrite(15, 1);
-	
-	network.connect();	
+	network.connect();
+	update = new UpdateService("ESP-Sauna");
 
 	server.start();
 
@@ -56,15 +57,17 @@ void setup() {
 bool emitUpdate = false;
 
 void loop() {
+	update->loop();
 	rgbCont.updateInfo(lightInfo);
 	
-
 	if(lightInfo.update) {
 		strip.turnOnOff(lightInfo.onOff);
 		strip.setTarget(lightInfo.color.h, lightInfo.color.v, lightInfo.color.w);
 		strip.setWhiteMode(lightInfo.whiteMode);
 		lightInfo.update = false;
 		emitUpdate = true;
+		if(lightInfo.fan) digitalWrite(D8, 1);
+		else digitalWrite(D8, 0);
 	}
 	
 	if(strip.getOnOff()) {
