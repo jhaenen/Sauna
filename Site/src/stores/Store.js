@@ -1,4 +1,4 @@
-var gateway = "ws://192.168.2.233/websocket";
+var gateway = "ws://192.168.2.234/websocket";
 var websocket;
 
 const Store = {
