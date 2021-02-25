@@ -48,8 +48,8 @@ WebServer::WebServer(LightContInfo* info, uint16_t port) {
 			Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
 
             char buf[150];
-            snprintf(buf, 150, "{\"sensor\":{\"temp\":%.2f,\"hum\":%.2f},\"lights\":{\"onOff\":%s,\"color\":{\"h\":%u,\"v\":%u,\"w\":%u},\"speed\":%u,\"whiteMode\":%s,\"fan\":%s}}",
-						            temp, hum, (lightInfo->onOff) ? "true" : "false", lightInfo->color.h, lightInfo->color.v, lightInfo->color.w, lightInfo->speed, (lightInfo->whiteMode) ? "true" : "false", (lightInfo->fan) ? "true" : "false");
+            snprintf(buf, 150, "{\"lights\":{\"onOff\":%s,\"color\":{\"h\":%u,\"v\":%u,\"w\":%u},\"speed\":%u,\"whiteMode\":%s,\"fan\":%s},\"sensor\":{\"temp\":%.2f,\"hum\":%.2f}}",
+						            (lightInfo->onOff) ? "true" : "false", lightInfo->color.h, lightInfo->color.v, lightInfo->color.w, lightInfo->speed, (lightInfo->whiteMode) ? "true" : "false", (lightInfo->fan) ? "true" : "false", temp, hum);
             
             server->text(client->id(), buf);
 		} else if(type == WS_EVT_DISCONNECT) {
