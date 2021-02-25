@@ -23,16 +23,22 @@ UpdateService::UpdateService(const char* hostName, uint16_t port) {
 		}
 
 		Serial.println("Start updating: " + type);
+		pinMode(2, OUTPUT);
 	});
 
 	ArduinoOTA.onEnd([]() { Serial.println("\nEnd"); });
 	ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
         static int8_t curPro = -1;
+		static bool led = true;
         uint8_t procent = progress / (total / 100);
+		
 		if((procent % 5) == 0 && procent > curPro) {
             Serial.printf("Progress: %u%%\n", procent);
             curPro = procent;
         }
+
+		digitalWrite(2, led);
+		led = !led;
 	});
 	
 	ArduinoOTA.onError([](ota_error_t error) {
